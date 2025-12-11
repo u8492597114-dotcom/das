@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
   templateUrl: './lista-ordini.html',
   styleUrl: './lista-ordini.scss',
 })
-export class ListaOrdini {
+export class ListaOrdiniComponent {
 
 }

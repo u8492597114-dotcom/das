@@ -2,14 +2,36 @@
 
 Questo documento spiega come avviare l'intero sistema in un ambiente di sviluppo locale utilizzando Docker.
 
+## Architettura di Rete
+
+Il sistema utilizza un **reverse proxy** (basato su Nginx) per gestire il traffico in ingresso. Tutte le richieste sulla porta 80 vengono intercettate dal reverse proxy e instradate al servizio corretto.
+
+Per questo motivo, l'accesso all'applicazione non avviene più tramite `localhost:PORTA`, ma utilizzando dei domini locali specifici.
+
 ## Prerequisiti
 
 -   [Docker](https://www.docker.com/get-started/) installato e in esecuzione.
 -   Docker Compose (solitamente incluso con Docker Desktop).
+-   **Configurazione del file `hosts` locale** (vedi istruzioni sotto).
+
+### Configurazione del File `hosts`
+
+Per far funzionare i domini `.local`, devi dire al tuo computer di risolverli sull'indirizzo locale (`127.0.0.1`). Questo si fa modificando il file `hosts`.
+
+1.  **Apri il file `hosts` con privilegi di amministratore**:
+    *   **Linux/macOS**: `sudo nano /etc/hosts`
+    *   **Windows**: Apri il Blocco Note come Amministratore e poi apri `C:\Windows\System32\drivers\etc\hosts`
+
+2.  **Aggiungi le seguenti righe** in fondo al file:
+    ```
+    127.0.0.1 gestionale.local
+    127.0.0.1 crm.local
+    127.0.0.1 ecommerce.local
+    ```
+
+3.  **Salva il file**. Potrebbe essere necessario svuotare la cache DNS del tuo sistema operativo.
 
 ## Avvio dell'Ambiente
-
-L'intera applicazione (frontend, backend, database) è orchestrata tramite il file `docker-compose.yml` che si trova nella root del progetto.
 
 Per avviare tutti i servizi, esegui il seguente comando dalla cartella root del progetto:
 
@@ -17,43 +39,23 @@ Per avviare tutti i servizi, esegui il seguente comando dalla cartella root del 
 docker compose up --build
 ```
 
--   `--build`: Questa opzione forza la ricostruzione delle immagini Docker. È consigliabile usarla la prima volta o dopo aver apportato modifiche ai `Dockerfile` o al codice sorgente.
-
 Dopo che il comando è stato eseguito, i servizi saranno disponibili ai seguenti indirizzi:
 
--   **Frontend**: [http://localhost:8080](http://localhost:8080)
--   **Backend API**: [http://localhost:3000](http://localhost:3000)
--   **Database**: Accessibile sulla porta `5432` dall'host (e dal servizio backend tramite il nome `database:5432`).
+-   **Frontend**:
+    -   [http://gestionale.local](http://gestionale.local)
+    -   [http://crm.local](http://crm.local)
+    -   [http://ecommerce.local](http://ecommerce.local)
+-   **Backend API**: [http://localhost:3000](http://localhost:3000) (accessibile direttamente per lo sviluppo)
+-   **Database**: Accessibile sulla porta `5432` dall'host.
 
 ## Selezionare un Brand al Volo
 
-Puoi decidere quale versione brandizzata dell'applicazione avviare modificando il file `.env`.
+Per cambiare la versione brandizzata dell'applicazione, modifica il file `.env`:
 
-1.  Se non l'hai già fatto, crea un file `.env` nella root del progetto copiando da `.env.example`.
-2.  Apri il file `.env`.
-3.  Modifica il valore della variabile `BRAND` con il nome della configurazione del cliente desiderato (es. `BRAND=default` o `BRAND=clienteA`).
-
-    ```
-    # ...
-    # Change this to build a different brand (e.g., 'default' or 'clienteB')
-    BRAND=clienteA
-    # ...
-    ```
-
-4.  Salva il file e riavvia i container con `docker compose up --build` per applicare le modifiche.
+1.  Crea un file `.env` copiando da `.env.example` se non esiste.
+2.  Apri il file `.env` e modifica il valore della variabile `BRAND`.
+3.  Riavvia i container con `docker compose up --build`.
 
 ## Fermare l'Ambiente
 
-Per fermare tutti i container, premi `Ctrl + C` nel terminale in cui `docker compose` è in esecuzione.
-
-Per rimuovere i container e le reti create, esegui:
-
-```bash
-docker compose down
-```
-
-Per rimuovere anche il volume del database (ATTENZIONE: questo cancellerà tutti i dati), esegui:
-
-```bash
-docker compose down -v
-```
+Per fermare i container, premi `Ctrl + C`. Per rimuoverli, esegui `docker compose down`. Per rimuovere anche il volume del database, `docker compose down -v`.

@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
   templateUrl: './gestione-articoli.html',
   styleUrl: './gestione-articoli.scss',
 })
-export class GestioneArticoli {
+export class GestioneArticoliComponent {
 
 }
