@@ -1,0 +1,30 @@
+<header class="header">
+  <nav class="nav-container">
+    <a class="nav-brand" href="/">Gestionale White-Label</a>
+    <ul class="nav-links">
+      <li>
+        <a routerLink="/gestionale/dashboard" routerLinkActive="active-link">Dashboard</a>
+      </li>
+      <li>
+        <a routerLink="/gestionale/clienti" routerLinkActive="active-link">Clienti</a>
+      </li>
+      <li>
+        <a routerLink="/gestionale/fornitori" routerLinkActive="active-link">Fornitori</a>
+      </li>
+      <li>
+        <a routerLink="/gestionale/articoli" routerLinkActive="active-link">Articoli</a>
+      </li>
+      <li>
+        <a routerLink="/gestionale/ordini" routerLinkActive="active-link">Ordini</a>
+      </li>
+      <li>
+        <a routerLink="/gestionale/fatture" routerLinkActive="active-link">Fatture</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main class="main-content">
+  <!-- Qui verranno caricate le pagine del modulo -->
+  <router-outlet></router-outlet>
+</main>

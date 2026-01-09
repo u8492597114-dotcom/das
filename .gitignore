@@ -1,0 +1,19 @@
+# Node / NPM
+node_modules/
+npm-debug.log
+dist/
+.npm/
+
+# macOS
+.DS_Store
+
+# IDEs / Editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Environment variables
+.env
